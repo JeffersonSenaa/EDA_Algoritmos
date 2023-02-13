@@ -32,6 +32,7 @@ int main(){
     struct MediaDelay dados[539384];
     FILE *fp, *fpNovo;   //Ponteiro dos arquivos
     clock_t start, end; //Variável que guarda o valor do tempo de execução em milissegundos
+    double cpu_time_used;
     //Variável que guarda total de voos de cada companhia
     int tCO = 0, tMQ = 0, tAA = 0, tWN = 0, t9E = 0, tOO = 0, tAS = 0, tHA = 0, tDL = 0, tF9 = 0, tEV = 0, tUA = 0, tFL = 0, tUS = 0, tOH = 0, tXE = 0, tYV = 0, tB6 = 0;
     //Variável que guarda quantos voos atrasaram de cada companhia
@@ -195,11 +196,13 @@ int main(){
 
     //Fecha os Arquivos
     fclose(fp);                         
-    fclose(fpNovo);
-
     //Fim do tempo de execução
-    end = clock();    
+    end = clock();  
 
-    printf("Tempo de execução: %ld clock ticks\n", end - start);
+    cpu_time_used = ((double)(end - start)) / CLOCKS_PER_SEC;
+     fprintf(fpNovo, "O tempo de execução foi %f segundos\n", cpu_time_used);
+     fprintf(fpNovo, "O metodo de ordenação utilizado foi de Quick Sort. \n"); 
+     
+    fclose(fpNovo);
     return 0;                 
 }
