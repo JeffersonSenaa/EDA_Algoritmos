@@ -1,0 +1,5 @@
+.vscode
+
+# Arquivos de saída do compilador C
+*.out
+*.o
