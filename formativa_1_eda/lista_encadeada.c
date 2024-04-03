@@ -54,23 +54,90 @@ void insere_antes(celula *le, int x, int y){
     p->prox = nova;
 }
 
+void remove_depois(celula *le){
+    celula *aux = le->prox;
+    le->prox = aux->prox;
+    free(aux);
+}
+
+void remove_elemento(celula *le, int x){
+    celula *p, *q;
+    p = le;
+    q = le->prox;
+    while(q != NULL && q->dado != x){
+        p = q;
+        q = q->prox;
+    }
+    if(q != NULL){
+    p->prox = q->prox;
+    free(q);
+    }
+}
+
+void remove_todos_elementos(celula *le, int x) {
+    celula *p, *q;
+    p = le;
+    q = le->prox;
+    while(q != NULL){
+        if(q->dado == x){
+            p->prox = q->prox;
+            free(q);    
+            q = p->prox;
+        }
+        else{
+            p = q;
+            q = q->prox;
+        }
+    }
+}
+
+celula *busca(celula *le, int x){
+    celula *p, *q;
+    p = le;
+    q = le->prox;
+    while(q != NULL && q->dado != x){
+        p = q;
+        q = q->prox;
+    }
+    if(q->dado == x && q != NULL){
+        printf("%d", q->dado);
+        return q;
+    }
+    else
+        return NULL;
+    
+}
+
+celula *busca_rec(celula *le, int x){
+    celula *p, *q;
+    p = le;
+    q = le->prox;
+    if(q == NULL)
+        return NULL;
+    if(q->dado == x){
+        printf("%d", q->dado);
+        return q;
+    }
+    return busca_rec(q, x);
+}
+
 int main(){
     celula *le = cria_lista();
     insere(5, le);
-    insere(4, le);
+    insere(2, le);
     insere(3, le);
     insere(2, le);
     insere(1, le);
 
-    insere_antes(le, 999, 4);
-    insere_antes(le, 777, 17);
+    insere_antes(le, 2, 4);
+    insere_antes(le, 7, 17);
 
+    // printf("Imprime: \n");
+    // imprime(le);
 
-    printf("Imprime: \n");
-    imprime(le);
+    busca_rec(le, 2);
+    busca(le, 3);
 
-    printf("Imprime Recursivo: \n");
-    imprime_rec(le);
 
     return 0;
 }
