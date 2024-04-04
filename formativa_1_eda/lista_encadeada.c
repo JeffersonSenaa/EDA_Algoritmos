@@ -121,23 +121,52 @@ celula *busca_rec(celula *le, int x){
     return busca_rec(q, x);
 }
 
+void mescla_lista(celula *l1, celula *l2, celula *l3){
+    celula *p1, *p2, *p3;
+    p1 = l1->prox;
+    p2 = l2->prox;
+    p3 = l3;
+
+    while (p1 != NULL && p2 != NULL)    {
+        if(p1->dado <= p2->dado){
+            p3->prox = p1;
+            p1 = p1->prox;
+        }
+        else{
+            p3->prox = p2;
+            p2 = p2->prox;
+        }
+        p3 = p3->prox;
+    }
+    while (p1 != NULL){
+        p3->prox = p1;
+        p1 = p1->prox;
+        p3 = p3->prox;
+    }
+    while (p2 != NULL){
+        p3->prox = p2;
+        p2 = p2->prox;
+        p3 = p3->prox;
+    } 
+    p3->prox = NULL;
+    
+}
+
 int main(){
-    celula *le = cria_lista();
-    insere(5, le);
-    insere(2, le);
-    insere(3, le);
-    insere(2, le);
-    insere(1, le);
+    celula *l1 = cria_lista();
+    celula *l2 = cria_lista();
+    celula *l3 = cria_lista();
+    insere(10, l1);
+    insere(9, l1);
+    insere(7, l1);
+    insere(1, l1);
+    insere(8, l2);
+    insere(3, l2);
+    insere(2, l2);
 
-    insere_antes(le, 2, 4);
-    insere_antes(le, 7, 17);
+    mescla_lista(l1, l2, l3);
 
-    // printf("Imprime: \n");
-    // imprime(le);
-
-    busca_rec(le, 2);
-    busca(le, 3);
-
+    imprime(l3);
 
     return 0;
 }
