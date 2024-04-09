@@ -3,16 +3,17 @@
 #include <stdbool.h>
 
 int main(){
-    int sizeV, sum;
+    int sizeV;
+    double sum;
     bool found = false;
     scanf("%d", &sizeV);
-    if(sizeV < 10)
-        exit(EXIT_FAILURE);
+    // if(sizeV < 10)
+    //     exit(EXIT_FAILURE);
     int *v = malloc(sizeV * sizeof(int));
     for(int i=0; i < sizeV; i++){
         scanf("%d", &v[i]);
-        if(v[1] < 0)
-            exit(EXIT_FAILURE);
+        // if(v[1] < 0)
+        //     exit(EXIT_FAILURE);
         sum += v[i];
     }
     int average = sum/sizeV;
