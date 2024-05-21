@@ -1,0 +1,80 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+typedef struct {
+    int fst;
+    int snd;
+} Pair;
+
+typedef Pair Item;
+
+int less(Item a, Item b) {
+    return a.fst == b.fst ? a.snd < b.snd : a.fst < b.fst; 
+}
+
+void exchange(Item *a, Item *b) {
+    Item t = *a;
+    *a = *b;
+    *b = t;
+}
+
+int partition(Item *v, int l, int r) {
+    int i = l - 1;
+    Item pivot = v[r];
+    for (;;) {
+        while (less(v[++i], pivot));
+        while (less(pivot, v[--r])) if (r == l) break;
+        if (i >= r) break;
+        exchange(&v[i], &v[r]);
+    }
+    exchange(&v[i], &v[l]);
+    return i;
+}
+
+void quick_select(Item *v, int l, int r, int k) {
+    if (l >= r) return;
+    int i = partition(v, l, r);
+    if (i > k) quick_select(v, l, i - 1, k);
+    else if (i < k) quick_select(v, i + 1, r, k);
+}
+
+void merge(Item *v, int l, int mid, int r) {
+    int pl = l, pr = mid + 1, p = 0;
+    Item *aux = (Item *)malloc(sizeof(Item) * (r - l + 1));
+    while (pl <= mid && pr <= r) {
+        if (v[pl].snd < v[pr].snd) aux[p++] = v[pl++];
+        else aux[p++] = v[pr++];
+    }
+    while (pl <= mid) aux[p++] = v[pl++];
+    while (pr <= r) aux[p++] = v[pr++];
+    p = 0;
+    for (int i = l; i <= r; ++i) v[i] = aux[p++];
+    free(aux);
+}
+
+void merge_sort(Item *v, int l , int r) {
+    if (l >= r) return;
+    int mid = l + (r - l) / 2;
+    merge_sort(v, l, mid);
+    merge_sort(v, mid + 1 , r);
+    merge(v, l, mid, r);
+}
+
+int main(void) {
+    int k;
+    scanf("%d", &k);
+    Item *xs = (Item *)malloc(sizeof(Item) * ((int)1e7 + 1));
+    int cnt = 0, n, s;
+    while (scanf("%d %d", &s, &n) != EOF) {
+        xs[cnt].fst = n;
+        xs[cnt].snd = s;
+        cnt++;
+    }
+    quick_select(xs, 0, cnt - 1, k);
+    merge_sort(xs, 0, k - 1);
+    for (int i = 0; i < k; ++i) {
+        printf("%d %d\n", xs[i].snd, xs[i].fst);
+    }
+    free(xs);
+    return 0;
+}
