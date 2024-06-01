@@ -1,4 +1,5 @@
 .vscode
+temp
 
 # Arquivos de saída do compilador C
 *.out
